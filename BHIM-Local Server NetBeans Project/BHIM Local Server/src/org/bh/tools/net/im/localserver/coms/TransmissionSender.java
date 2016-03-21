@@ -14,6 +14,8 @@ import org.bh.tools.net.im.core.util.LoggingUtils;
 /**
  * TransmissionSender is copyright Blue Husky Programming ©2016 BH-1-PS <hr/>
  *
+ * Sends a transmission.
+ *
  * @author Kyli of Blue Husky Programming
  * @version 1.0.0 - 2016-03-19 (1.0.0) - Kyli created TransmissionSender
  * @since 2016-03-19

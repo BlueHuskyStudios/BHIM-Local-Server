@@ -3,6 +3,7 @@ package org.bh.tools.net.im.localserver;
 import java.awt.Desktop;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -20,6 +21,7 @@ public class Main {
 
     public static final String BHIM_URL_STRING = "https://github.com/BlueHuskyStudios/BHIM/releases";
     public static final URL BHIM_URL;
+    private static final String DEV_TEST_ARG = "--devtest";
 
     static {
         URL temp = null;
@@ -31,10 +33,14 @@ public class Main {
         BHIM_URL = temp;
     }
 
-    @SuppressWarnings("UseSpecificCatch") // catch everything paranoidly
+    @SuppressWarnings({"UseSpecificCatch", "UseOfSystemOutOrSystemErr"}) // catch everything paranoidly, tell console devs
     public static void main(String[] args) {
+        if (Arrays.stream(args).anyMatch((String t) -> t.equals(DEV_TEST_ARG))) {
+            DevTest.main(args);
+            return;
+        }
         String title = "Oops! This isn't exactly an app.";
-        String messageLine1 = "BHIM Core is a library for the local functionality of BHIM.";
+        String messageLine1 = "BHIM Local Server is a library for the local functionality of BHIM.";
         String message = messageLine1 + " \nFor the full instant messenger, see " + BHIM_URL_STRING;
 
         try {
