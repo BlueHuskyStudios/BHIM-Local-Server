@@ -17,7 +17,7 @@ public class ChatSender {
      * Sends the given text to the given recipient, then calls the given listener. All parameters are necessary.
      *
      * @param textToSend       The text to send.
-     * @param recipient        The person to whom to send the data.
+     * @param recipient        The person to whom to send the text.
      * @param responseListener The block to be called when a response is available.
      */
     public static void sendText(String textToSend, Recipient recipient,

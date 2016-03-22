@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
@@ -16,9 +17,14 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import org.bh.tools.net.im.core.msg.Recipient;
+import org.bh.tools.net.im.core.msg.Sender;
 import org.bh.tools.net.im.core.msg.Transmittable;
+import org.bh.tools.net.im.core.util.BHIMConstants;
 import org.bh.tools.net.im.core.util.LoggingUtils;
+import org.bh.tools.net.im.localserver.coms.ChatReceiver;
 import org.bh.tools.net.im.localserver.coms.ChatSender;
+import org.bh.tools.net.im.localserver.coms.StringTransmittable;
+import org.bh.tools.net.im.localserver.coms.TransmissionListener;
 import org.bh.tools.net.im.localserver.coms.TransmissionSentResponseListener;
 
 /**
@@ -60,21 +66,32 @@ class DevTest {
         gbc.gridy++;
         frame.add(chatInput, gbc);
 
-        JButton sendButton = new JButton(new AbstractAction("Send") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String textToSend = chatInput.getText();
-                chatInput.setText(null);
-                ChatSender.sendText(textToSend, recipient,
-                        (HttpStatus responseCode, Transmittable response) -> {
-                            LoggingUtils.BACKGROUND.log(Level.INFO, "Transmission sent with response: \n\t" + responseCode
-                                    + "\n\t" + response);
-                        }
-                );
-            }
-        });
+        JButton sendButton = new JButton("Send");
         gbc.gridx++;
         frame.add(sendButton, gbc);
+
+        sendButton.addActionListener((ActionEvent e) -> {
+            String textToSend = chatInput.getText();
+            chatInput.setText(null);
+            ChatSender.sendText(textToSend, recipient,
+                    (HttpStatus responseCode, Transmittable response) -> {
+                        LoggingUtils.BACKGROUND.log(Level.INFO, "Transmission sent with response: \n\t" + responseCode
+                                + "\n\t" + response);
+                    }
+            );
+        });
+
+        Sender sender = new Sender(ipAddress, BHIMConstants.DEFAULT_CHAT_PORT);
+        ChatReceiver.listenForText(sender, (HttpStatus status, StringTransmittable incoming, Throwable problem) -> {
+            if (null != problem) {
+                LoggingUtils.BACKGROUND.log(Level.SEVERE, "Proplem occurred when trying to send!", problem);
+            } else {
+                LoggingUtils.BACKGROUND.log(Level.INFO, "Transmission received with response: \n\t" + status
+                        + "\n\t" + incoming);
+                chatOutput.setText(incoming.getBody().getContent());
+            }
+        });
+
 
         frame.setVisible(true);
     }

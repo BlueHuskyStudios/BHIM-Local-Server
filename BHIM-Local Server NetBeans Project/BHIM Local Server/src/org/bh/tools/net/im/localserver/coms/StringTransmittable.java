@@ -1,6 +1,9 @@
 package org.bh.tools.net.im.localserver.coms;
 
-import org.bh.tools.net.im.core.util.TextUtils;
+import org.bh.tools.net.im.core.msg.Body;
+import org.bh.tools.net.im.core.msg.Transmittable;
+import org.bh.tools.net.im.localserver.coms.BasicTransmittable.NullHeaderFooter;
+import org.bh.tools.net.im.localserver.coms.StringTransmittable.StringBody;
 
 
 /**
@@ -12,9 +15,68 @@ import org.bh.tools.net.im.core.util.TextUtils;
  * @version 1.0.0 - 2016-03-18 (1.0.0) - Kyli created StringTransmittable
  * @since 2016-03-18
  */
-public class StringTransmittable extends BasicTransmittable {
+public class StringTransmittable implements Transmittable<NullHeaderFooter, StringBody, NullHeaderFooter> {
+
+    private final StringBody body;
 
     public StringTransmittable(String contents) {
-        super(contents.getBytes(TextUtils.DEFAULT_CHARSET));
+        body = new StringBody(contents);
+    }
+
+    @Override
+    public NullHeaderFooter getHeader() {
+        return NullHeaderFooter.NULL;
+    }
+
+    @Override
+    public StringBody getBody() {
+        return body;
+    }
+
+    @Override
+    public NullHeaderFooter getFooter() {
+        return NullHeaderFooter.NULL;
+    }
+
+    @Override
+    public long size() {
+        return body.size();
+    }
+
+    @Override
+    public byte[] convertToBytes() {
+        return body.convertToBytes();
+    }
+
+    public static class StringBody extends Body<String> {
+
+        public StringBody(String content) {
+            super(content);
+        }
+
+        @Override
+        public byte[] convertToBytes() {
+            return _content.getBytes();
+        }
+
+        @Override
+        public String toString() {
+            return _content;
+        }
+
+        @Override
+        public int length() {
+            return _content.length();
+        }
+
+        @Override
+        public char charAt(int index) {
+            return _content == null ? 0 : _content.charAt(index);
+        }
+
+        @Override
+        public CharSequence subSequence(int start, int end) {
+            return _content == null ? null : _content.subSequence(start, end);
+        }
     }
 }
