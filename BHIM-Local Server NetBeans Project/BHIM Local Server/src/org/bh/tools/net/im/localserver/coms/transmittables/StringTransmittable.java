@@ -1,9 +1,9 @@
-package org.bh.tools.net.im.localserver.coms;
+package org.bh.tools.net.im.localserver.coms.transmittables;
 
 import org.bh.tools.net.im.core.msg.Body;
 import org.bh.tools.net.im.core.msg.Transmittable;
-import org.bh.tools.net.im.localserver.coms.BasicTransmittable.NullHeaderFooter;
-import org.bh.tools.net.im.localserver.coms.StringTransmittable.StringBody;
+import org.bh.tools.net.im.localserver.coms.transmittables.BasicTransmittable.NullHeaderFooter;
+import org.bh.tools.net.im.localserver.coms.transmittables.StringTransmittable.StringBody;
 
 
 /**
@@ -19,7 +19,7 @@ public class StringTransmittable implements Transmittable<NullHeaderFooter, Stri
 
     private final StringBody body;
 
-    public StringTransmittable(String contents) {
+    public StringTransmittable(CharSequence contents) {
         body = new StringBody(contents);
     }
 
@@ -48,20 +48,20 @@ public class StringTransmittable implements Transmittable<NullHeaderFooter, Stri
         return body.convertToBytes();
     }
 
-    public static class StringBody extends Body<String> {
+    public static class StringBody extends Body<CharSequence> {
 
-        public StringBody(String content) {
+        public StringBody(CharSequence content) {
             super(content);
         }
 
         @Override
         public byte[] convertToBytes() {
-            return _content.getBytes();
+            return _content == null ? new byte[0] : _content.toString().getBytes();
         }
 
         @Override
         public String toString() {
-            return _content;
+            return _content == null ? null : _content.toString();
         }
 
         @Override

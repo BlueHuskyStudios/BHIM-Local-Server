@@ -10,12 +10,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-import javax.net.ssl.SSLSocketFactory;
+import java.util.logging.Logger;
+import javax.net.ssl.SSLServerSocketFactory;
 import org.bh.tools.net.im.core.msg.Source;
+import org.bh.tools.net.im.core.msg.Transmittable;
 import org.bh.tools.net.im.core.util.LoggingUtils;
+import org.bh.tools.net.im.localserver.coms.transmittables.StringTransmittable;
 
 /**
  * TransmissionReceiver is copyright Blue Husky Programming ©2016 BH-1-PS <hr/>
@@ -79,11 +84,26 @@ public class TransmissionReceiver {
                 while (!finalNonnullStopper.shouldStop()) {
                     LoggingUtils.BACKGROUND.fine("Opening new socket...");
                     // TODO: Fill in local info?
-                    Socket connectionSocket = SSLSocketFactory.getDefault().createSocket(source.getAddress(), source.getPort(), null, 0);
+                    ServerSocket connectionSocket = SSLServerSocketFactory.getDefault().createServerSocket(source.getPort(), 0, source.getAddress());
 
                     LoggingUtils.BACKGROUND.fine("Starting request thread...");
 
-                    new Thread(new HttpRequest(connectionSocket, responseListener)).start();
+                    new Thread(() -> {
+                        try (// these are auto-closed:
+                                Socket remoteSocket = connectionSocket.accept();
+                                PrintWriter out = new PrintWriter(remoteSocket.getOutputStream(), true);
+                                BufferedReader inReader = new BufferedReader(new InputStreamReader(remoteSocket.getInputStream()));) {
+                            char[] input = null;
+                            StringBuilder inBuilder = new StringBuilder();
+                            while (inReader.read(input) >= 0 && !finalNonnullStopper.shouldStop()) {
+                                Transmittable incoming = new StringTransmittable(inBuilder);
+                                responseListener.transmissionReceived(HttpStatus.OK, incoming, null);
+                            }
+                        } catch (IOException ex) {
+                            Logger.getLogger(TransmissionReceiver.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    }).start();
                 }
             } catch (IOException ex) {
                 LoggingUtils.BACKGROUND.log(Level.SEVERE, "Exception on ", ex);

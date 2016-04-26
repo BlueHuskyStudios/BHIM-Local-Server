@@ -5,12 +5,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,9 +21,7 @@ import org.bh.tools.net.im.core.util.BHIMConstants;
 import org.bh.tools.net.im.core.util.LoggingUtils;
 import org.bh.tools.net.im.localserver.coms.ChatReceiver;
 import org.bh.tools.net.im.localserver.coms.ChatSender;
-import org.bh.tools.net.im.localserver.coms.StringTransmittable;
-import org.bh.tools.net.im.localserver.coms.TransmissionListener;
-import org.bh.tools.net.im.localserver.coms.TransmissionSentResponseListener;
+import org.bh.tools.net.im.localserver.coms.transmittables.StringTransmittable;
 
 /**
  * BHIM Core is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
@@ -42,7 +38,10 @@ class DevTest {
 
     public static void main(String[] args) {
         String ipAddressStr = JOptionPane.showInputDialog(null, "IP Address to chat with", WINDOW_TITLE, JOptionPane.QUESTION_MESSAGE);
-        InetAddress ipAddress = null;
+        if (null == ipAddressStr) {
+            return;
+        }
+        InetAddress ipAddress;
         try {
             ipAddress = InetAddress.getByName(ipAddressStr);
         } catch (UnknownHostException ex) {
@@ -54,6 +53,7 @@ class DevTest {
         Recipient recipient = new Recipient(ipAddress, 0);
 
         JFrame frame = new JFrame(WINDOW_TITLE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.NORTHWEST,
                 GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
@@ -88,7 +88,7 @@ class DevTest {
             } else {
                 LoggingUtils.BACKGROUND.log(Level.INFO, "Transmission received with response: \n\t" + status
                         + "\n\t" + incoming);
-                chatOutput.setText(incoming.getBody().getContent());
+                chatOutput.setText(String.valueOf(incoming.getBody().getContent()));
             }
         });
 
@@ -96,3 +96,5 @@ class DevTest {
         frame.setVisible(true);
     }
 }
+
+//TODO: Test this with a VM or other computer

@@ -1,5 +1,6 @@
 package org.bh.tools.net.im.localserver.coms;
 
+import org.bh.tools.net.im.localserver.coms.transmittables.StringTransmittable;
 import org.bh.tools.net.im.core.msg.Sender;
 
 /**

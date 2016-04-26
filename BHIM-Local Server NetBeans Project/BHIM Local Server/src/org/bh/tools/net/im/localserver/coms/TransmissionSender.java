@@ -1,5 +1,6 @@
 package org.bh.tools.net.im.localserver.coms;
 
+import org.bh.tools.net.im.localserver.coms.transmittables.BasicTransmittable;
 import com.floatbackwards.statuscodes.HttpStatus;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -55,7 +56,7 @@ public class TransmissionSender {
 
             try {
                 // TODO: Fill in local info?
-                socket = new Socket(destination.getAddress(), destination.getPort(), null, 0);
+                socket = new Socket(destination.getAddress(), destination.getPort());
 
                 DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 

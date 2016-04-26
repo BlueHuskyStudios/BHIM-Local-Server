@@ -1,11 +1,11 @@
-package org.bh.tools.net.im.localserver.coms;
+package org.bh.tools.net.im.localserver.coms.transmittables;
 
 import org.bh.tools.net.im.core.msg.Body;
 import org.bh.tools.net.im.core.msg.Footer;
 import org.bh.tools.net.im.core.msg.Header;
 import org.bh.tools.net.im.core.msg.Transmittable;
-import org.bh.tools.net.im.localserver.coms.BasicTransmittable.BasicBody;
-import org.bh.tools.net.im.localserver.coms.BasicTransmittable.NullHeaderFooter;
+import org.bh.tools.net.im.localserver.coms.transmittables.BasicTransmittable.BasicBody;
+import org.bh.tools.net.im.localserver.coms.transmittables.BasicTransmittable.NullHeaderFooter;
 
 /**
  * BasicTransmittable, made for BHIM, is copyright Blue Husky Programming ©2016 BH-1-PS <hr/>
