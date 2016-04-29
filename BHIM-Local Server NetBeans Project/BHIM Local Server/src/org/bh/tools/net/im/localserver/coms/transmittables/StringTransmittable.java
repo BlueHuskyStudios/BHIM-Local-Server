@@ -7,7 +7,7 @@ import org.bh.tools.net.im.localserver.coms.transmittables.StringTransmittable.S
 
 
 /**
- * StringTransmittable, made for BHIM, is copyright Blue Husky Programming ©2016 BH-1-PS <hr/>
+ * StringTransmittable, made for BHIM, is copyright Blue Husky Programming ©2016 BH-1-PS <hr>
  *
  * A very basic transmittable, which sends a string.
  *

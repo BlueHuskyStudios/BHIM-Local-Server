@@ -8,7 +8,7 @@ import org.bh.tools.net.im.localserver.coms.transmittables.BasicTransmittable.Ba
 import org.bh.tools.net.im.localserver.coms.transmittables.BasicTransmittable.NullHeaderFooter;
 
 /**
- * BasicTransmittable, made for BHIM, is copyright Blue Husky Programming ©2016 BH-1-PS <hr/>
+ * BasicTransmittable, made for BHIM, is copyright Blue Husky Programming ©2016 BH-1-PS <hr>
  *
  * Just raw bytes! No header and no footer.
  *

@@ -4,7 +4,7 @@ import org.bh.tools.net.im.localserver.coms.transmittables.StringTransmittable;
 import org.bh.tools.net.im.core.msg.Sender;
 
 /**
- * ChatReceiver is copyright Blue Husky Programming ©2016 BH-1-PS <hr/>
+ * ChatReceiver is copyright Blue Husky Programming ©2016 BH-1-PS <hr>
  *
  * Receives chat messages.
  *

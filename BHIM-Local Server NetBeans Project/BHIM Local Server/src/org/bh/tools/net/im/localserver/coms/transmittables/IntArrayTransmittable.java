@@ -13,7 +13,7 @@ import org.bh.tools.net.im.localserver.coms.transmittables.IntArrayTransmittable
 import org.bh.tools.net.im.localserver.coms.transmittables.IntArrayTransmittable.IntArrayHeaderFooter;
 
 /**
- * IntArrayTransmittable, made for BHIM, is copyright Blue Husky Programming ©2016 BH-1-PS <hr/>
+ * IntArrayTransmittable, made for BHIM, is copyright Blue Husky Programming ©2016 BH-1-PS <hr>
  *
  * Just raw ints! No header and no footer.
  *

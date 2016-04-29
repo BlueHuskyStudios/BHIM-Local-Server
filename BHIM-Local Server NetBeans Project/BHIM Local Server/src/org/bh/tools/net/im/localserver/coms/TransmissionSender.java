@@ -13,7 +13,7 @@ import org.bh.tools.net.im.core.msg.Transmittable;
 import org.bh.tools.net.im.core.util.LoggingUtils;
 
 /**
- * TransmissionSender is copyright Blue Husky Programming ©2016 BH-1-PS <hr/>
+ * TransmissionSender is copyright Blue Husky Programming ©2016 BH-1-PS <hr>
  *
  * Sends a transmission.
  *

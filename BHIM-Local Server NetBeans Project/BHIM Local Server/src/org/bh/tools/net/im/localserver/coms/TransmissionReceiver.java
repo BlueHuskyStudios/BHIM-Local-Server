@@ -18,20 +18,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.net.ssl.SSLServerSocketFactory;
 import org.bh.tools.net.im.core.msg.Source;
-import org.bh.tools.net.im.core.msg.Transmittable;
 import org.bh.tools.net.im.core.util.LoggingUtils;
 import org.bh.tools.net.im.localserver.coms.transmittables.StringTransmittable;
 
 /**
- * TransmissionReceiver is copyright Blue Husky Programming ©2016 BH-1-PS <hr/>
+ * TransmissionReceiver is copyright Blue Husky Programming ©2016 BH-1-PS <hr>
  *
- * Receives transmissions from a specific source. Adapted from
- * http://students.engr.scu.edu/~nzooleh/COEN146S05/lab3/WebServer.java
+ * Receives transmissions from a specific source.
  *
  * @author Kyli of Blue Husky Programming
  * @version 1.0.0 - 2016-03-19 (1.0.0) - Kyli created TransmissionReceiver
  * @since 2016-03-19
  */
+@SuppressWarnings("rawtypes")
 public class TransmissionReceiver {
 
 
@@ -43,12 +42,15 @@ public class TransmissionReceiver {
      * listener is called immediately (with {@link HttpStatus#BadRequest} and {@code null}), and {@code false} is
      * returned.</p>
      *
-     * @param source           [Required] Where to send the data.
-     * @param responseListener [Required] The block to be called when a response is available.
+     * @param <TransmittableType> The type of transmittable for which you will listen.
+     * @param source              [Required] Where to send the data.
+     * @param responseListener    [Required] The block to be called when a response is available.
      * @return {@code true} iff the data was successfully sent, whether or not the server received it. If there is a
      *         transmission problem, it will be reflected in an HTTP Status Code passed to {@code responseListener}.
      */
-    public static boolean listenForTransmissions(final Source source, final TransmissionListener responseListener) {
+    // TODO: make this generic
+    public static <TransmittableType extends StringTransmittable> boolean listenForTransmissions(final Source source,
+            final TransmissionListener<StringTransmittable> responseListener) {
         return listenForTransmissions(source, responseListener, null);
     }
 
@@ -60,13 +62,16 @@ public class TransmissionReceiver {
      * start the transmission, the given response listener is called immediately (with {@link HttpStatus#BadRequest} and
      * {@code null}) and {@code false} is returned.</p>
      *
-     * @param source           [Required] Where to send the data.
-     * @param responseListener [Required] The block to be called when a response is available.
-     * @param stopper          [Optional] The block to tell this when to stop listening.
+     * @param <TransmittableType> The type of transmittable for which you will listen.
+     * @param source              [Required] Where to send the data.
+     * @param responseListener    [Required] The block to be called when a response is available.
+     * @param stopper             [Optional] The block to tell this when to stop listening.
      * @return {@code true} iff the data was successfully sent, whether or not the server received it. If there is a
      *         transmission problem, it will be reflected in an HTTP Status Code passed to {@code responseListener}.
      */
-    public static boolean listenForTransmissions(final Source source, final TransmissionListener responseListener, final Stopper stopper) {
+    // TODO: make this generic
+    public static <TransmittableType extends StringTransmittable> boolean listenForTransmissions(final Source source,
+            final TransmissionListener<StringTransmittable> responseListener, final Stopper stopper) {
         if (null == responseListener) {
             LoggingUtils.BACKGROUND.severe("listenForTransmission requires a listener. Not listening.");
             return false;
@@ -89,18 +94,21 @@ public class TransmissionReceiver {
                     LoggingUtils.BACKGROUND.fine("Starting request thread...");
 
                     new Thread(() -> {
-                        try (// these are auto-closed:
-                                Socket remoteSocket = connectionSocket.accept();
-                                PrintWriter out = new PrintWriter(remoteSocket.getOutputStream(), true);
-                                BufferedReader inReader = new BufferedReader(new InputStreamReader(remoteSocket.getInputStream()));) {
-                            char[] input = null;
-                            StringBuilder inBuilder = new StringBuilder();
-                            while (inReader.read(input) >= 0 && !finalNonnullStopper.shouldStop()) {
-                                Transmittable incoming = new StringTransmittable(inBuilder);
+                        while (!finalNonnullStopper.shouldStop()) {
+                            try (// these are auto-closed:
+                                    Socket remoteSocket = connectionSocket.accept();
+                                    PrintWriter out = new PrintWriter(remoteSocket.getOutputStream(), true);
+                                    BufferedReader inReader = new BufferedReader(new InputStreamReader(remoteSocket.getInputStream()));) {
+                                char[] input = null;
+                                StringBuilder inBuilder = new StringBuilder();
+                                while (inReader.read(input) >= 0 && !finalNonnullStopper.shouldStop()) {
+                                    inBuilder.append(input);
+                                }
+                                StringTransmittable incoming = new StringTransmittable(inBuilder);
                                 responseListener.transmissionReceived(HttpStatus.OK, incoming, null);
+                            } catch (IOException ex) {
+                                Logger.getLogger(TransmissionReceiver.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                        } catch (IOException ex) {
-                            Logger.getLogger(TransmissionReceiver.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
                     }).start();

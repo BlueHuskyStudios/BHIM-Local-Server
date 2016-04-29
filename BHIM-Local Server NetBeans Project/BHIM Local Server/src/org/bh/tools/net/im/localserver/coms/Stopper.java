@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.bh.tools.net.im.localserver.coms;
 
 /**
- * Stopper is copyright Blue Husky Programming ©2016 BH-1-PS <hr/>
+ * Stopper is copyright Blue Husky Programming ©2016 BH-1-PS <hr>
  *
  * For controlling events asynchronously.
  *

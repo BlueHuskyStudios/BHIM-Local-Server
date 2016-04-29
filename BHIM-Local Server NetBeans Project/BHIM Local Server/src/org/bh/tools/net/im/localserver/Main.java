@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- * BHIM Core is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * BHIM Core is copyright Blue Husky Programming ©2015 BH-1-PS <hr>
  *
  * This is a tiny shell app so someone running the JAR knows why they shouldn't be.
  *
@@ -22,6 +22,7 @@ public class Main {
     public static final String BHIM_URL_STRING = "https://github.com/BlueHuskyStudios/BHIM/releases";
     public static final URL BHIM_URL;
     private static final String DEV_TEST_ARG = "--devtest";
+    private static final String DERP_TEST_ARG = "--derptest";
 
     static {
         URL temp = null;
@@ -37,6 +38,10 @@ public class Main {
     public static void main(String[] args) {
         if (Arrays.stream(args).anyMatch((String t) -> t.equals(DEV_TEST_ARG))) {
             DevTest.main(args);
+            return;
+        }
+        if (Arrays.stream(args).anyMatch((String t) -> t.equals(DERP_TEST_ARG))) {
+            DerpTest.main(args);
             return;
         }
         String title = "Oops! This isn't exactly an app.";

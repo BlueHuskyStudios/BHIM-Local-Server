@@ -24,7 +24,7 @@ import org.bh.tools.net.im.localserver.coms.ChatSender;
 import org.bh.tools.net.im.localserver.coms.transmittables.StringTransmittable;
 
 /**
- * BHIM Core is copyright Blue Husky Programming ©2015 BH-1-PS <hr/>
+ * BHIM Core is copyright Blue Husky Programming ©2015 BH-1-PS <hr>
  *
  * This is a tiny test app so devs can ensure BHIM Local Server is functioning as intended.
  *
@@ -50,7 +50,7 @@ class DevTest {
             return;
         }
 
-        Recipient recipient = new Recipient(ipAddress, 0);
+        Recipient recipient = new Recipient(ipAddress, BHIMConstants.DEFAULT_CHAT_PORT);
 
         JFrame frame = new JFrame(WINDOW_TITLE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

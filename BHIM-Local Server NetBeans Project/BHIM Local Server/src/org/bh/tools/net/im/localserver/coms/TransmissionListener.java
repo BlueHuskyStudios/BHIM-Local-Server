@@ -4,7 +4,7 @@ import com.floatbackwards.statuscodes.HttpStatus;
 import org.bh.tools.net.im.core.msg.Transmittable;
 
 /**
- * TransmissionListener is copyright Blue Husky Programming ©2016 BH-1-PS <hr/>
+ * TransmissionListener is copyright Blue Husky Programming ©2016 BH-1-PS <hr>
  *
  * @param <IncomingType> The type of data to listen for
  *
